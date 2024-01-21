@@ -33,7 +33,7 @@ export const addToCartController = (req, res) => {
 		});
 	}
 	couponApplicable = false;
-	return res.json({ message: "added to cart" });
+	return res.json({ message: "Added to Cart" });
 };
 
 export const checkoutController = (req, res) => {
@@ -41,6 +41,10 @@ export const checkoutController = (req, res) => {
 	let discountedPrice = 0;
 	let applyCoupon = req.query.applyCoupon == "true" && couponApplicable;
 	const currentOrder = getCurrentOrder();
+
+	if (currentOrder.length == 0) {
+		return res.status(400).json({ message: "No items in cart" });
+	}
 
 	for (let item of currentOrder) {
 		totalPrice += item.price * item.quantity;
